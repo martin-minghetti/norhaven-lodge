@@ -33,7 +33,9 @@
 | 17:38:00 | Repo público live: https://github.com/martin-minghetti/norhaven-lodge | +33:26 |
 | 17:41:30 | Deps instaladas: Drizzle, MP SDK, Resend, AI SDK, Supabase, Vitest, Playwright | +36:56 |
 | 17:41:30 | shadcn/ui init + 13 componentes base agregados | +36:56 |
-| pendiente | Schema + Supabase setup | — |
+| 17:55:00 | Supabase project creado via CLI (sa-east-1) | +50:26 |
+| 17:58:00 | Schema pushed + seed ok (3 cabañas + 15 reviews) | +53:26 |
+| pendiente | Bajada de fotos a /public/images | — |
 | pendiente | Pages base (home + cabin detail) | — |
 | pendiente | Booking flow + MP integration | — |
 | pendiente | AI feature live | — |
