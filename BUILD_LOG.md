@@ -38,7 +38,33 @@
 | 18:08:00 | 35 fotos bajadas a /public/images (33 MB) | +63:26 |
 | 18:25:00 | Home page completa (hero, listing, ubicación, experiencia, testimonios, CTA) | +80:26 |
 | 18:35:00 | Cabin detail page completa (galería, descripción, amenities, sticky booking card, reviews) | +90:26 |
-| pendiente | Booking flow + MP integration (sandbox) | — |
+| **18:12:03** | **⏸ Session 1 pausada** | **+67:29** |
+
+## Resumen Session 1
+
+- Total wall-clock activo: **~1h 07 min** (T-0 17:04 → pausa 18:12, descontando idle)
+- Commits: 6 en main
+- Pages live (dev): `/` + `/cabanas/[slug]`
+- Próximo: booking flow + MP
+
+---
+
+### Continúa en Session 2
+
+Pendientes en orden:
+- [ ] Booking flow + MP integration (sandbox) — `/cabanas/[slug]/reservar` + server action + webhook + email Resend
+- [ ] AI semantic search (Vercel AI SDK + tool calling sobre catálogo)
+- [ ] Tests Vitest + Playwright
+- [ ] Deploy Vercel — **T-final del proyecto**
+
+Bloqueos resueltos: ninguno.
+
+Para retomar:
+```bash
+cd ~/Projects/norhaven-lodge
+npm run dev
+# abrir http://localhost:3001 (o 3000 si está libre)
+```
 | pendiente | Pages base (home + cabin detail) | — |
 | pendiente | Booking flow + MP integration | — |
 | pendiente | AI feature live | — |
