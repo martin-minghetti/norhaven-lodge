@@ -27,9 +27,13 @@
 | 17:09:19 | Round 2 fotos (filter landscape) | +4:45 |
 | 17:24:00 | Round 3 fotos (bosque/text/lifestyle) | +19:26 |
 | 17:25:32 | Set fotos cerrado (44 aprobadas) | +20:58 |
-| pendiente | Spec definido | — |
-| pendiente | git init + primer commit | — |
-| pendiente | Schema Drizzle + Supabase setup | — |
+| 17:34:00 | Spec del demo aprobado por Martín | +29:26 |
+| 17:36:58 | `create-next-app` scaffold + initial commit (`d9a4a8f`) | +32:24 |
+| 17:37:16 | BUILD_LOG en repo (`398f7df`) | +32:42 |
+| 17:38:00 | Repo público live: https://github.com/martin-minghetti/norhaven-lodge | +33:26 |
+| 17:41:30 | Deps instaladas: Drizzle, MP SDK, Resend, AI SDK, Supabase, Vitest, Playwright | +36:56 |
+| 17:41:30 | shadcn/ui init + 13 componentes base agregados | +36:56 |
+| pendiente | Schema + Supabase setup | — |
 | pendiente | Pages base (home + cabin detail) | — |
 | pendiente | Booking flow + MP integration | — |
 | pendiente | AI feature live | — |
