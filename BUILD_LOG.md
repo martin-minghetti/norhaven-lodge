@@ -36,7 +36,9 @@
 | 17:55:00 | Supabase project creado via CLI (sa-east-1) | +50:26 |
 | 17:58:00 | Schema pushed + seed ok (3 cabañas + 15 reviews) | +53:26 |
 | 18:08:00 | 35 fotos bajadas a /public/images (33 MB) | +63:26 |
-| pendiente | Home page (hero + listing + secciones) | — |
+| 18:25:00 | Home page completa (hero, listing, ubicación, experiencia, testimonios, CTA) | +80:26 |
+| 18:35:00 | Cabin detail page completa (galería, descripción, amenities, sticky booking card, reviews) | +90:26 |
+| pendiente | Booking flow + MP integration (sandbox) | — |
 | pendiente | Pages base (home + cabin detail) | — |
 | pendiente | Booking flow + MP integration | — |
 | pendiente | AI feature live | — |
