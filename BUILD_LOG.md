@@ -35,7 +35,8 @@
 | 17:41:30 | shadcn/ui init + 13 componentes base agregados | +36:56 |
 | 17:55:00 | Supabase project creado via CLI (sa-east-1) | +50:26 |
 | 17:58:00 | Schema pushed + seed ok (3 cabañas + 15 reviews) | +53:26 |
-| pendiente | Bajada de fotos a /public/images | — |
+| 18:08:00 | 35 fotos bajadas a /public/images (33 MB) | +63:26 |
+| pendiente | Home page (hero + listing + secciones) | — |
 | pendiente | Pages base (home + cabin detail) | — |
 | pendiente | Booking flow + MP integration | — |
 | pendiente | AI feature live | — |
