@@ -41,6 +41,9 @@
 | **18:12:03** | **⏸ Session 1 pausada** | **+67:29** |
 | **2026-05-04 22:25** | **▶ Session 2 reanudada** · env vars MP + Resend cargados | **+67:29 activo** |
 | 2026-05-04 22:31 | Bloque A done · booking flow + MP sandbox + webhook + email Resend + páginas resultado · build limpio | **+73:29 activo** |
+| 2026-05-04 22:50 | Deploy prod #1 a Vercel · https://norhaven-lodge.vercel.app · env vars production cargadas | +92 activo |
+| 2026-05-04 22:55 | Hallazgo: MP sandbox checkout rechaza ("Hubo un error accediendo a esta página") tanto desde init_point como sandbox_init_point. Causa probable: panel MP requiere "Configurar ambiente de desarrollo" (1 tarea pendiente). Pivote a `PAYMENT_MODE=simulated` para demo público | +97 activo |
+| 2026-05-04 23:02 | Bloque A end-to-end LIVE · simulated-checkout funcionando · booking → paid → email Resend confirmado en DB | **+104 activo** |
 
 ## Resumen Session 1
 

@@ -134,6 +134,15 @@ export async function createBookingAndPreference(
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   const isLocal = siteUrl.includes("localhost") || siteUrl.includes("127.0.0.1");
+  const paymentMode = process.env.PAYMENT_MODE || "simulated";
+
+  if (paymentMode !== "production") {
+    return {
+      ok: true,
+      bookingId: booking.id,
+      initPoint: `${siteUrl}/bookings/${booking.id}/simulated-checkout`,
+    };
+  }
 
   try {
     const pref = await mpPreference.create({
@@ -174,7 +183,13 @@ export async function createBookingAndPreference(
       .set({ mpPreferenceId: pref.id })
       .where(eq(schema.bookings.id, booking.id));
 
-    return { ok: true, bookingId: booking.id, initPoint: pref.init_point };
+    const useSandbox = process.env.MP_MODE === "sandbox";
+    const checkoutUrl =
+      useSandbox && pref.sandbox_init_point
+        ? pref.sandbox_init_point
+        : pref.init_point;
+
+    return { ok: true, bookingId: booking.id, initPoint: checkoutUrl };
   } catch (err) {
     await db
       .update(schema.bookings)
