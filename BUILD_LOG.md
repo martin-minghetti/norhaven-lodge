@@ -8,10 +8,10 @@
 - Primer artefacto del proyecto generado (curación de fotos en Unsplash via agent-browser).
 - Marca el momento en que paramos de hablar y empezamos a producir.
 
-**T-final** (proyecto cerrado): 2026-05-05 13:55 ART
-- Sitio live en https://norhaven-lodge.vercel.app, end-to-end funcionando, tests Vitest + Playwright passing, narrativa marketing publicada.
+**T-final** (proyecto cerrado): 2026-05-05 14:35 ART
+- Sitio live en https://norhaven-lodge.vercel.app, end-to-end funcionando, tests Vitest + Playwright passing, narrativa marketing publicada, security hardening completo.
 
-**Total wall-clock activo**: ~2h 33 min (S1 + S2 + S3)
+**Total wall-clock activo**: ~3h 13 min (S1 + S2 + S3 + security pass)
 
 ## Reglas
 
@@ -51,7 +51,10 @@
 | 2026-05-05 13:30 | Refactor: extracción de `rangesOverlap` (función pura) + `bookings-schema.ts` (separado de server-only) | +143 activo |
 | 2026-05-05 13:35 | Vitest configurado · 27 tests passing (formatPriceARS, bookingInputSchema, rangesOverlap) | +148 activo |
 | 2026-05-05 13:37 | Playwright configurado · E2E happy path passing: home → cabin → form (calendar real) → simulated checkout → confirm + cleanup DB | +150 activo |
-| **2026-05-05 13:55** | **🏁 T-FINAL · proyecto cerrado** · tests + narrativa marketing publicada | **+153 activo · 2h 33 min total** |
+| **2026-05-05 13:55** | **🏁 T-FINAL inicial · proyecto cerrado** · tests + narrativa marketing publicada | **+153 activo · 2h 33 min total** |
+| 2026-05-05 14:00 | Security audit · 6 findings (3 HIGH + 2 MEDIUM + 1 LOW) | +158 activo |
+| 2026-05-05 14:35 | Hardening completo: RLS Supabase + IDOR token simulated-checkout + rate limit AI search + security headers + webhook ts freshness + .env.example. Deploy prod. 45 unit + 1 E2E passing | +193 activo |
+| **2026-05-05 14:35** | **🔒 Security hardening done · proyecto cerrado v2** | **+193 activo · 3h 13 min total** |
 
 ## Resumen Session 3
 
