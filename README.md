@@ -1,15 +1,15 @@
 # Norhaven Lodge
 
-Booking site demo · cabañas boutique frente al lago · **build pública con cronómetro**.
+Booking site demo · boutique lakeside cabins · **public build with stopwatch**.
 
 🌐 **Live**: https://norhaven-lodge.vercel.app
-📊 **Build log**: [`BUILD_LOG.md`](BUILD_LOG.md) — narrativa cronometrada de cada hito
+📊 **Build log**: [`BUILD_LOG.md`](BUILD_LOG.md) — timestamped narrative of every milestone
 
-> Proyecto de portfolio. El lodge y las cabañas son ficticios. Fotos de Unsplash bajo Unsplash License — ver [`public/images/CREDITS.md`](public/images/CREDITS.md).
+> Portfolio project. The lodge and cabins are fictional. Photos from Unsplash under the Unsplash License — see [`public/images/CREDITS.md`](public/images/CREDITS.md).
 
-## Por qué este repo
+## Why this repo
 
-Demuestra integración fullstack completa de una booking app real: schema relacional, Server Actions con validación de overlap de fechas, Checkout Pro con webhook firmado, email transaccional con templates React, y semantic search con LLM. **El tiempo de desarrollo está cronometrado** desde el primer commit (T-0) — ver [`BUILD_LOG.md`](BUILD_LOG.md).
+Demonstrates a full-stack booking app integration end to end: relational schema, Server Actions with date-overlap validation, Checkout Pro with signed webhook, transactional email with React templates, and LLM-powered semantic search. **Build time is tracked from first commit (T-0)** — see [`BUILD_LOG.md`](BUILD_LOG.md).
 
 ## Stack
 
@@ -18,35 +18,35 @@ Demuestra integración fullstack completa de una booking app real: schema relaci
 - **Tailwind v4** + **shadcn/ui** + Fraunces serif
 - **Drizzle ORM** + **Supabase Postgres** (sa-east-1)
 - **MercadoPago Checkout Pro** (sandbox · sandbox_init_point + HMAC webhook)
-- **Resend** + **react-email** (templates JSX)
-- **Vercel AI SDK** + **Google Gemini 2.5 Flash** (semantic search free tier)
-- Deploy: **Vercel** (alias estable + auto deploys)
+- **Resend** + **react-email** (JSX templates)
+- **Vercel AI SDK** + **Google Gemini 2.5 Flash** (semantic search, free tier)
+- Deploy: **Vercel** (stable alias + auto deploys)
 
-## Features live
+## Live features
 
-| Feature | Path | Notas |
+| Feature | Path | Notes |
 |---------|------|-------|
-| Home con AI search | `/` | Input natural → Gemini rankea cabañas con razón generada |
-| Catálogo | `/#cabanas` | 3 cabañas, fetch desde Supabase |
-| Cabin detail | `/cabanas/[slug]` | Galería, amenities, sticky booking card, reseñas |
-| Booking flow | `/cabanas/[slug]/reservar` | Calendar shadcn (date range), validación overlap server-side |
-| Checkout simulado | `/bookings/[id]/simulated-checkout` | Demo público sin tarjeta — ver "Payment modes" abajo |
+| Home with AI search | `/` | Natural-language input → Gemini ranks cabins with generated reasoning |
+| Catalog | `/#cabanas` | 3 cabins, fetched from Supabase |
+| Cabin detail | `/cabanas/[slug]` | Gallery, amenities, sticky booking card, reviews |
+| Booking flow | `/cabanas/[slug]/reservar` | shadcn date-range calendar, server-side overlap validation |
+| Simulated checkout | `/bookings/[id]/simulated-checkout` | Public demo without a card — see "Payment modes" below |
 | Confirm/Failed | `/bookings/[id]/{confirm,failed}` | Status-aware UI |
-| MP webhook | `/api/webhooks/mp` | HMAC SHA256 validation, idempotente |
+| MP webhook | `/api/webhooks/mp` | HMAC SHA256 validation, idempotent |
 
 ## Payment modes
 
-El backend integra MercadoPago Checkout Pro completo. Se controla con la env var `PAYMENT_MODE`:
+The backend integrates the full MercadoPago Checkout Pro flow. It is gated by the `PAYMENT_MODE` env var:
 
-- **`simulated`** (default): el flow va a una página propia `/bookings/[id]/simulated-checkout` con summary + 2 botones (aprobar/rechazar). Aprobar marca booking `paid` + dispara email Resend real. Es lo que está activo en el deploy público para que cualquiera pueda testear sin tarjeta ni cuenta MP.
-- **`production`**: el flow redirige a MercadoPago Checkout Pro real con `init_point`/`sandbox_init_point` (según `MP_MODE=sandbox|production`), y el webhook `/api/webhooks/mp` recibe la notificación firmada.
+- **`simulated`** (default): the flow lands on an in-app page `/bookings/[id]/simulated-checkout` with a summary and two buttons (approve/reject). Approving marks the booking `paid` and triggers a real Resend email. This is what runs on the public deploy so anyone can test end-to-end without a card or MP account.
+- **`production`**: the flow redirects to the actual MercadoPago Checkout Pro via `init_point`/`sandbox_init_point` (driven by `MP_MODE=sandbox|production`), and `/api/webhooks/mp` receives the signed notification.
 
 ```env
-PAYMENT_MODE=simulated      # demo público
-# PAYMENT_MODE=production   # checkout MP real
+PAYMENT_MODE=simulated      # public demo
+# PAYMENT_MODE=production   # real MP checkout
 ```
 
-Toda la lógica MP (preference creation, webhook signature validation, status mapping) vive en el repo y está testeada manualmente. Switching es **un solo env var**.
+All MP logic (preference creation, webhook signature validation, status mapping) lives in this repo and has been manually tested. Switching is **a single env var**.
 
 ## AI semantic search
 
@@ -56,16 +56,16 @@ const { object } = await generateObject({
   model: google("gemini-2.5-flash"),
   schema: searchResultSchema,  // Zod
   system: "...",
-  prompt: `Catálogo:\n${JSON.stringify(catalog)}\n\nPedido: "${query}"`,
+  prompt: `Catalog:\n${JSON.stringify(catalog)}\n\nRequest: "${query}"`,
 });
 ```
 
-- Schema fuerza output estructurado: `matches[].{slug, reason, matchScore}` + opcional `noMatchMessage`
-- System prompt previene hallucination de amenities y limita a 3 matches
-- Model: Gemini 2.5 Flash (free tier 1500 req/día)
-- Costo: $0 hasta el rate limit
+- Schema enforces structured output: `matches[].{slug, reason, matchScore}` plus optional `noMatchMessage`
+- System prompt prevents amenity hallucinations and caps results at 3 matches
+- Model: Gemini 2.5 Flash (free tier, 1500 req/day)
+- Cost: $0 up to the rate limit
 
-Probá en el hero: `"algo para una pareja, íntimo, con vista al lago"` → recomienda Casa Lago con razón generada.
+Try it in the hero: `"something for a couple, intimate, with a lake view"` → recommends Casa Lago with generated reasoning.
 
 ## Quick start
 
@@ -74,7 +74,7 @@ git clone https://github.com/martin-minghetti/norhaven-lodge.git
 cd norhaven-lodge
 npm install
 cp .env.example .env.local
-# Completá DATABASE_URL + Supabase keys (ver "Environment" abajo)
+# Fill in DATABASE_URL + Supabase keys (see "Environment" below)
 npm run db:push    # apply schema
 npm run db:seed    # 3 cabins + 15 reviews
 npm run dev        # http://localhost:3000
@@ -82,7 +82,7 @@ npm run dev        # http://localhost:3000
 
 ## Environment variables
 
-Ver [`.env.example`](.env.example) para la lista completa. Mínimo para correr dev:
+See [`.env.example`](.env.example) for the full list. Minimum to run dev:
 
 ```env
 # Supabase
@@ -92,10 +92,10 @@ NEXT_PUBLIC_SUPABASE_URL=https://<ref>.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
-# Pagos (simulados por default; producción opcional)
+# Payments (simulated by default; production optional)
 PAYMENT_MODE=simulated
-MP_ACCESS_TOKEN=APP_USR-...      # solo si PAYMENT_MODE=production
-MP_WEBHOOK_SECRET=...            # solo si PAYMENT_MODE=production
+MP_ACCESS_TOKEN=APP_USR-...      # only if PAYMENT_MODE=production
+MP_WEBHOOK_SECRET=...             # only if PAYMENT_MODE=production
 MP_MODE=sandbox                   # sandbox|production
 
 # Email
@@ -111,7 +111,7 @@ GOOGLE_GENERATIVE_AI_API_KEY=AIza...
 ```
 src/
 ├── app/
-│   ├── page.tsx                            # Home con AI search
+│   ├── page.tsx                            # Home with AI search
 │   ├── layout.tsx                          # Fonts + metadata
 │   ├── globals.css                         # Custom palette
 │   ├── cabanas/[slug]/
@@ -119,7 +119,7 @@ src/
 │   │   └── reservar/
 │   │       ├── page.tsx                    # Booking form (server)
 │   │       ├── booking-form.tsx            # Client component (calendar + state)
-│   │       └── actions.ts                  # Server action submitBooking
+│   │       └── actions.ts                  # submitBooking server action
 │   ├── bookings/[id]/
 │   │   ├── confirm/page.tsx                # Success page
 │   │   ├── failed/page.tsx                 # Failure page
@@ -148,37 +148,39 @@ src/
 ## Database commands
 
 ```bash
-npm run db:generate   # Crear migration desde cambios de schema
-npm run db:push       # Push schema a Supabase (dev)
-npm run db:studio     # Abrir Drizzle Studio
+npm run db:generate   # Generate migration from schema changes
+npm run db:push       # Push schema to Supabase (dev)
+npm run db:studio     # Open Drizzle Studio
 npm run db:seed       # Reset + seed
 ```
 
-## Decisiones técnicas notables
+## Notable technical decisions
 
-- **Server Action over API route** para form submission: aprovecha streaming, redirect nativo y zero client-side fetch boilerplate.
-- **`use server` + Zod safeParse** en lugar de react-hook-form: form de 5 campos no justifica el peso del runtime.
-- **MP webhook con HMAC SHA256 manual** (no SDK helper): `validateMpSignature` en `lib/mp.ts` recompone el manifest `id:DATA;request-id:REQ;ts:TS;` y compara con `crypto.timingSafeEqual`.
-- **`formatPriceARS` extraído a `/lib/format.ts`** sin imports server-only: evita arrastrar `postgres` al bundle del cliente cuando un client component formatea precios.
-- **Portal para AI results**: el panel de resultados se renderiza fuera del `<section>` del hero (que tiene `overflow-hidden + h-[88vh]`) usando `createPortal` a un `#ai-results-slot` después del hero. Sin esto, los resultados quedaban "flotando" sobre la siguiente sección.
+- **Server Action over API route** for form submission: leverages streaming, native redirect, and zero client-side fetch boilerplate.
+- **`use server` + Zod `safeParse`** instead of react-hook-form: a 5-field form does not justify the runtime overhead.
+- **Manual HMAC SHA256 webhook validation** (no SDK helper): `validateMpSignature` in `lib/mp.ts` reassembles the manifest `id:DATA;request-id:REQ;ts:TS;` and compares with `crypto.timingSafeEqual`.
+- **`formatPriceARS` extracted to `/lib/format.ts`** without server-only imports: prevents pulling `postgres` into the client bundle when a client component formats prices.
+- **Portal for AI results**: the results panel is rendered outside the hero `<section>` (which has `overflow-hidden + h-[88vh]`) via `createPortal` into a `#ai-results-slot` placed after the hero. Without this, results would float over the next section.
 
-## Limitaciones conocidas
+## Known limitations
 
-- MP Checkout sandbox real requiere completar el flow "Configurar ambiente de desarrollo" en el panel MP de la app antes de aceptar checkouts. Por eso el demo público usa `PAYMENT_MODE=simulated`. Switching a `production` con cuenta MP completa funciona (código probado, redirect a `init_point` válido confirmado vía API).
-- Webhook MP solo se recibe en producción (URL pública). En dev local no llega; testear con cloudflared tunnel si hace falta.
+- A real MP Checkout sandbox requires completing the "Configurar ambiente de desarrollo" wizard in the MP developer panel before the app accepts checkouts. That is why the public demo runs on `PAYMENT_MODE=simulated`. Switching to `production` with a fully set up MP account works (the redirect to a valid `init_point` was confirmed via API).
+- The MP webhook is only delivered in production (public URL). It does not reach localhost; use a cloudflared tunnel if you need to test it locally.
 
 ## Build journal
 
-Ver [`BUILD_LOG.md`](BUILD_LOG.md) para la cronología completa con timestamps inmutables.
+See [`BUILD_LOG.md`](BUILD_LOG.md) for the full timeline with immutable timestamps.
 
 | Session | Date | Active time | Output |
 |---------|------|-------------|--------|
 | 1 | 2026-05-04 | ~1h 07 min | Schema, seed, photos, home + cabin detail pages, custom palette |
 | 2 | 2026-05-04 | ~1h 11 min | Booking flow + MP integration + Resend email + AI search + deploy |
-| **Total a la fecha** | — | **~2h 18 min** | Demo end-to-end live en producción |
+| 3 | 2026-05-05 | ~30 min | Vitest + Playwright + T-final |
+| Security pass | 2026-05-05 | ~40 min | RLS, IDOR token, rate limit, security headers, webhook freshness |
+| **Total to date** | — | **~3h 13 min** | Demo end-to-end live in production, hardened |
 
 ## Notes
 
 - Dev server defaults to `:3001` if `:3000` is busy.
-- Drizzle Kit needs **session pooler** (port 5432), not transaction pooler. Set `DIRECT_URL` accordingly.
-- Pooler hostname format is `aws-1-<region>` (no `aws-0-<region>` como aún figura en algunos docs).
+- Drizzle Kit needs the **session pooler** (port 5432), not the transaction pooler. Set `DIRECT_URL` accordingly.
+- Pooler hostname format is `aws-1-<region>` (not `aws-0-<region>` as some older docs still show).
