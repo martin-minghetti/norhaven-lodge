@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight, Users } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { HeroSearch } from "@/components/hero-search";
 import {
   formatPriceARS,
   getCabins,
@@ -44,13 +45,16 @@ export default async function HomePage() {
             Tres cabañas pensadas para descansar de verdad. Sin recepción, sin
             intermediarios, sin sorpresas.
           </p>
-          <Link
-            href="#cabanas"
-            className="mt-10 inline-flex w-fit items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-medium text-foreground transition-colors hover:bg-white/90"
-          >
-            Ver las cabañas
-            <ArrowUpRight className="h-4 w-4" />
-          </Link>
+          <HeroSearch
+            cabins={cabins.map((c) => ({
+              slug: c.slug,
+              name: c.name,
+              tagline: c.tagline,
+              capacity: c.capacity,
+              pricePerNight: c.pricePerNight,
+              imageUrl: c.images[0] ?? "/images/home/hero.jpg",
+            }))}
+          />
         </div>
       </section>
 

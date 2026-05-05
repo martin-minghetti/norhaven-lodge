@@ -44,6 +44,7 @@
 | 2026-05-04 22:50 | Deploy prod #1 a Vercel · https://norhaven-lodge.vercel.app · env vars production cargadas | +92 activo |
 | 2026-05-04 22:55 | Hallazgo: MP sandbox checkout rechaza ("Hubo un error accediendo a esta página") tanto desde init_point como sandbox_init_point. Causa probable: panel MP requiere "Configurar ambiente de desarrollo" (1 tarea pendiente). Pivote a `PAYMENT_MODE=simulated` para demo público | +97 activo |
 | 2026-05-04 23:02 | Bloque A end-to-end LIVE · simulated-checkout funcionando · booking → paid → email Resend confirmado en DB | **+104 activo** |
+| 2026-05-04 23:21 | Bloque B done · AI semantic search en hero con Gemini 2.5 Flash via Google AI free tier · generateObject con schema Zod · valida matches + noMatchMessage | **+123 activo** |
 
 ## Resumen Session 1
 

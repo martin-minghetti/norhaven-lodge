@@ -15,6 +15,7 @@
     "db:seed": "tsx --env-file=.env.local src/lib/db/seed.ts"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.67",
     "@ai-sdk/openai": "^3.0.59",
     "@base-ui/react": "^1.4.1",
     "@react-email/components": "^1.0.12",
