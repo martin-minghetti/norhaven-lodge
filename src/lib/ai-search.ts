@@ -1,9 +1,18 @@
 "use server";
 
+import { headers } from "next/headers";
 import { google } from "@ai-sdk/google";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { getCabins } from "@/lib/queries";
+import { rateLimit } from "@/lib/rate-limit";
+
+async function getClientIp(): Promise<string> {
+  const h = await headers();
+  const fwd = h.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0]!.trim();
+  return h.get("x-real-ip") ?? "unknown";
+}
 
 const searchResultSchema = z.object({
   matches: z
@@ -47,6 +56,15 @@ export async function searchCabins(query: string): Promise<SearchResponse> {
   }
   if (trimmed.length > 240) {
     return { ok: false, error: "Demasiado largo, resumí en una frase" };
+  }
+
+  const ip = await getClientIp();
+  const rl = rateLimit(`ai-search:${ip}`, 10, 60);
+  if (!rl.ok) {
+    return {
+      ok: false,
+      error: `Demasiadas búsquedas seguidas. Probá de nuevo en ${rl.resetInSeconds}s.`,
+    };
   }
 
   try {

@@ -24,14 +24,18 @@ export type MpWebhookValidation =
   | { ok: true; dataId: string }
   | { ok: false; reason: string };
 
+const MP_TS_WINDOW_SECONDS = 5 * 60;
+
 export function validateMpSignature({
   headers,
   dataId,
   secret,
+  now = Date.now(),
 }: {
   headers: MpWebhookHeaders;
   dataId: string | null;
   secret: string;
+  now?: number;
 }): MpWebhookValidation {
   if (!headers.signature) return { ok: false, reason: "missing x-signature" };
   if (!headers.requestId) return { ok: false, reason: "missing x-request-id" };
@@ -45,6 +49,15 @@ export function validateMpSignature({
   }
   const ts = tsPart.slice(3);
   const v1 = v1Part.slice(3);
+
+  const tsNum = Number(ts);
+  if (!Number.isFinite(tsNum) || tsNum <= 0) {
+    return { ok: false, reason: "malformed ts" };
+  }
+  const ageSeconds = Math.abs(Math.floor(now / 1000) - tsNum);
+  if (ageSeconds > MP_TS_WINDOW_SECONDS) {
+    return { ok: false, reason: "stale ts" };
+  }
 
   const manifest = `id:${dataId};request-id:${headers.requestId};ts:${ts};`;
   const expected = crypto

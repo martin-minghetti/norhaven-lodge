@@ -4,6 +4,7 @@ import { and, eq, gte, lte, ne } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { mpPreference } from "@/lib/mp";
 import { bookingInputSchema, type BookingInput } from "@/lib/bookings-schema";
+import { signBookingToken } from "@/lib/booking-token";
 
 export { bookingInputSchema, type BookingInput };
 
@@ -104,10 +105,11 @@ export async function createBookingAndPreference(
   const paymentMode = process.env.PAYMENT_MODE || "simulated";
 
   if (paymentMode !== "production") {
+    const token = signBookingToken(booking.id);
     return {
       ok: true,
       bookingId: booking.id,
-      initPoint: `${siteUrl}/bookings/${booking.id}/simulated-checkout`,
+      initPoint: `${siteUrl}/bookings/${booking.id}/simulated-checkout?t=${token}`,
     };
   }
 

@@ -4,11 +4,18 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db, schema } from "@/lib/db";
 import { sendBookingConfirmation } from "@/lib/email";
+import { validateBookingToken } from "@/lib/booking-token";
 
 export async function simulatePaymentAction(
   bookingId: string,
   outcome: "approved" | "rejected",
+  token: string,
 ) {
+  const tokenCheck = validateBookingToken(bookingId, token);
+  if (!tokenCheck.ok) {
+    redirect("/");
+  }
+
   const booking = await db.query.bookings.findFirst({
     where: eq(schema.bookings.id, bookingId),
   });

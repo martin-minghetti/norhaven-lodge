@@ -8,16 +8,23 @@ import { SiteFooter } from "@/components/site-footer";
 import { Button } from "@/components/ui/button";
 import { getBookingWithCabin } from "@/lib/bookings";
 import { formatPriceARS } from "@/lib/format";
+import { validateBookingToken } from "@/lib/booking-token";
 import { simulatePaymentAction } from "./actions";
 
 export const dynamic = "force-dynamic";
 
 export default async function SimulatedCheckoutPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ t?: string }>;
 }) {
   const { id } = await params;
+  const { t: token } = await searchParams;
+  const validation = validateBookingToken(id, token);
+  if (!validation.ok) notFound();
+
   const data = await getBookingWithCabin(id);
   if (!data) notFound();
 
@@ -27,8 +34,9 @@ export default async function SimulatedCheckoutPage({
     parseISO(booking.checkIn),
   );
 
-  const approve = simulatePaymentAction.bind(null, booking.id, "approved");
-  const reject = simulatePaymentAction.bind(null, booking.id, "rejected");
+  const tokenStr = token ?? "";
+  const approve = simulatePaymentAction.bind(null, booking.id, "approved", tokenStr);
+  const reject = simulatePaymentAction.bind(null, booking.id, "rejected", tokenStr);
 
   return (
     <>
