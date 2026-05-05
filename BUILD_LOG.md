@@ -39,6 +39,8 @@
 | 18:25:00 | Home page completa (hero, listing, ubicación, experiencia, testimonios, CTA) | +80:26 |
 | 18:35:00 | Cabin detail page completa (galería, descripción, amenities, sticky booking card, reviews) | +90:26 |
 | **18:12:03** | **⏸ Session 1 pausada** | **+67:29** |
+| **2026-05-04 22:25** | **▶ Session 2 reanudada** · env vars MP + Resend cargados | **+67:29 activo** |
+| 2026-05-04 22:31 | Bloque A done · booking flow + MP sandbox + webhook + email Resend + páginas resultado · build limpio | **+73:29 activo** |
 
 ## Resumen Session 1
 

@@ -1,5 +1,8 @@
+import "server-only";
 import { db, schema } from "./db";
 import { eq, asc } from "drizzle-orm";
+
+export { formatPriceARS } from "./format";
 
 export async function getCabins() {
   return db.select().from(schema.cabins).orderBy(asc(schema.cabins.pricePerNight));
@@ -23,12 +26,4 @@ export async function getReviewsForCabin(cabinId: string) {
 
 export async function getRecentReviews(limit = 6) {
   return db.select().from(schema.reviews).limit(limit);
-}
-
-export function formatPriceARS(amount: number) {
-  return new Intl.NumberFormat("es-AR", {
-    style: "currency",
-    currency: "ARS",
-    maximumFractionDigits: 0,
-  }).format(amount);
 }
