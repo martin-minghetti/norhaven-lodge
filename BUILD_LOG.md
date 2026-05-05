@@ -8,10 +8,10 @@
 - Primer artefacto del proyecto generado (curación de fotos en Unsplash via agent-browser).
 - Marca el momento en que paramos de hablar y empezamos a producir.
 
-**T-final** (sitio live): pendiente
-- Se cierra cuando el sitio esté deployado en Vercel con dominio público y funcionando end-to-end (browse → reserva → checkout MP sandbox → email confirmación).
+**T-final** (proyecto cerrado): 2026-05-05 13:55 ART
+- Sitio live en https://norhaven-lodge.vercel.app, end-to-end funcionando, tests Vitest + Playwright passing, narrativa marketing publicada.
 
-**Total**: pendiente (se calcula al cerrar)
+**Total wall-clock activo**: ~2h 33 min (S1 + S2 + S3)
 
 ## Reglas
 
@@ -47,6 +47,21 @@
 | 2026-05-04 23:21 | Bloque B done · AI semantic search en hero con Gemini 2.5 Flash via Google AI free tier · generateObject con schema Zod · valida matches + noMatchMessage | **+123 activo** |
 | 2026-05-04 23:30 | Fix layout: results panel via React portal fuera del hero + grid adaptativo según matches (1 = centered, 2 = 2-col, 3 = 3-col) | +132 activo |
 | **2026-05-04 23:36** | **⏸ Session 2 pausada** · todo deployado en prod · falta solo tests + cierre marketing | **+138 activo** |
+| **2026-05-05 13:25** | **▶ Session 3 reanudada** · plan: refactor → tests Vitest → Playwright E2E → T-final + marketing | **+138 activo** |
+| 2026-05-05 13:30 | Refactor: extracción de `rangesOverlap` (función pura) + `bookings-schema.ts` (separado de server-only) | +143 activo |
+| 2026-05-05 13:35 | Vitest configurado · 27 tests passing (formatPriceARS, bookingInputSchema, rangesOverlap) | +148 activo |
+| 2026-05-05 13:37 | Playwright configurado · E2E happy path passing: home → cabin → form (calendar real) → simulated checkout → confirm + cleanup DB | +150 activo |
+| **2026-05-05 13:55** | **🏁 T-FINAL · proyecto cerrado** · tests + narrativa marketing publicada | **+153 activo · 2h 33 min total** |
+
+## Resumen Session 3
+
+- Total wall-clock activo: **~30 min** (13:25 → 13:55)
+- Tests: 27 unit (Vitest) + 1 E2E (Playwright) — todos passing
+- Commits agregados: 2 (tests + T-final)
+- Hallazgos:
+  - Extraer `bookings-schema.ts` fuera de `server-only` permite testear el schema con Vitest sin mocks
+  - Playwright clicks reales sobre shadcn Calendar (react-day-picker v9) **sí** disparan `onSelect` correctamente — la limitación que vimos en S2 era específica de agent-browser, no de Playwright
+  - Resend rechaza con 403 emails a dominios no verificados (`norhaven.test`) — el `.catch()` en la action absorbe sin romper el flow
 
 ## Resumen Session 2
 
@@ -60,11 +75,11 @@
   - https://norhaven-lodge.vercel.app/api/webhooks/mp (live, validation HMAC)
 - Featured: AI semantic search funcionando con Gemini Flash free tier; booking → simulated checkout → email Resend confirmado end-to-end
 
-## Pendiente Session 3
+## Pendiente Session 3 — CERRADO
 
-- [ ] Tests Vitest (utils, schema validation, formatPrice, overlap logic)
-- [ ] Tests Playwright E2E (browse → reservar → confirm via simulated)
-- [ ] T-final formal: cerrar BUILD_LOG con timestamp final y publicar narrativa marketing en LinkedIn / Twitter
+- [x] Tests Vitest (utils, schema validation, formatPrice, overlap logic)
+- [x] Tests Playwright E2E (browse → reservar → confirm via simulated)
+- [x] T-final formal: BUILD_LOG cerrado + narrativa marketing publicada
 
 ## Resumen Session 1
 
