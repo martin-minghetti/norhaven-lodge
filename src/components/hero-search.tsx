@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { ArrowRight, Loader2, Sparkles } from "lucide-react";
 import { searchCabins, type SearchResult } from "@/lib/ai-search";
@@ -26,6 +27,11 @@ export function HeroSearch({ cabins }: { cabins: CabinLite[] }) {
   const [result, setResult] = useState<SearchResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [portalEl, setPortalEl] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setPortalEl(document.getElementById("ai-results-slot"));
+  }, []);
 
   const cabinBySlug = new Map(cabins.map((c) => [c.slug, c]));
 
@@ -38,8 +44,11 @@ export function HeroSearch({ cabins }: { cabins: CabinLite[] }) {
       const res = await searchCabins(query);
       if (res.ok) {
         setResult(res.result);
-        const target = document.getElementById("ai-results");
-        target?.scrollIntoView({ behavior: "smooth", block: "start" });
+        requestAnimationFrame(() => {
+          document
+            .getElementById("ai-results")
+            ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
       } else {
         setError(res.error);
       }
@@ -114,9 +123,11 @@ export function HeroSearch({ cabins }: { cabins: CabinLite[] }) {
         )}
       </form>
 
-      {result && (
-        <ResultsPanel result={result} cabinBySlug={cabinBySlug} />
-      )}
+      {result && portalEl &&
+        createPortal(
+          <ResultsPanel result={result} cabinBySlug={cabinBySlug} />,
+          portalEl,
+        )}
     </>
   );
 }
@@ -128,6 +139,14 @@ function ResultsPanel({
   result: SearchResult;
   cabinBySlug: Map<string, CabinLite>;
 }) {
+  const matchCount = result.matches.length;
+  const gridCols =
+    matchCount === 1
+      ? "max-w-md"
+      : matchCount === 2
+        ? "max-w-3xl grid grid-cols-1 gap-8 md:grid-cols-2"
+        : "grid gap-8 md:grid-cols-3";
+
   return (
     <section
       id="ai-results"
@@ -141,8 +160,10 @@ function ResultsPanel({
           </p>
         </div>
         <h2 className="mt-3 font-serif text-3xl md:text-4xl">
-          {result.matches.length > 0
-            ? "Esto pensamos para vos"
+          {matchCount > 0
+            ? matchCount === 1
+              ? "Tenemos una para vos"
+              : "Esto pensamos para vos"
             : "No encontramos un match exacto"}
         </h2>
 
@@ -152,8 +173,8 @@ function ResultsPanel({
           </p>
         )}
 
-        {result.matches.length > 0 && (
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
+        {matchCount > 0 && (
+          <div className={`mt-12 ${gridCols} mx-auto`}>
             {result.matches.map((match) => {
               const cabin = cabinBySlug.get(match.slug);
               if (!cabin) return null;

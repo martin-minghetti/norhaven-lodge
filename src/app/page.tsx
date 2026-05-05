@@ -58,6 +58,9 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Slot for AI search results (portal target) */}
+      <div id="ai-results-slot" />
+
       {/* About strip */}
       <section className="border-b border-border/50 bg-background">
         <div className="mx-auto max-w-4xl px-6 py-24 text-center lg:px-10">
