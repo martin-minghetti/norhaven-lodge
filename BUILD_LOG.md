@@ -45,6 +45,26 @@
 | 2026-05-04 22:55 | Hallazgo: MP sandbox checkout rechaza ("Hubo un error accediendo a esta página") tanto desde init_point como sandbox_init_point. Causa probable: panel MP requiere "Configurar ambiente de desarrollo" (1 tarea pendiente). Pivote a `PAYMENT_MODE=simulated` para demo público | +97 activo |
 | 2026-05-04 23:02 | Bloque A end-to-end LIVE · simulated-checkout funcionando · booking → paid → email Resend confirmado en DB | **+104 activo** |
 | 2026-05-04 23:21 | Bloque B done · AI semantic search en hero con Gemini 2.5 Flash via Google AI free tier · generateObject con schema Zod · valida matches + noMatchMessage | **+123 activo** |
+| 2026-05-04 23:30 | Fix layout: results panel via React portal fuera del hero + grid adaptativo según matches (1 = centered, 2 = 2-col, 3 = 3-col) | +132 activo |
+| **2026-05-04 23:36** | **⏸ Session 2 pausada** · todo deployado en prod · falta solo tests + cierre marketing | **+138 activo** |
+
+## Resumen Session 2
+
+- Total wall-clock activo: **~71 min** (22:25 → pausa 23:36)
+- Acumulado proyecto (S1 + S2): **~2h 18 min** desde T-0
+- Commits agregados: 5 (booking flow, simulated payment, AI search + 2 fixes)
+- Endpoints en prod:
+  - https://norhaven-lodge.vercel.app/ (home con AI search)
+  - https://norhaven-lodge.vercel.app/cabanas/casa-lago (detail)
+  - https://norhaven-lodge.vercel.app/cabanas/casa-lago/reservar (form)
+  - https://norhaven-lodge.vercel.app/api/webhooks/mp (live, validation HMAC)
+- Featured: AI semantic search funcionando con Gemini Flash free tier; booking → simulated checkout → email Resend confirmado end-to-end
+
+## Pendiente Session 3
+
+- [ ] Tests Vitest (utils, schema validation, formatPrice, overlap logic)
+- [ ] Tests Playwright E2E (browse → reservar → confirm via simulated)
+- [ ] T-final formal: cerrar BUILD_LOG con timestamp final y publicar narrativa marketing en LinkedIn / Twitter
 
 ## Resumen Session 1
 
